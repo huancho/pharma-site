@@ -106,10 +106,6 @@ function Footer() {
           <Typography variant="small">© 2026 Halden Pharma Supply.</Typography>
           <Typography variant="small" className="text-pretty lg:col-span-2">
             Photos by{" "}
-            <a href={unsplashProfile("mavishopper")} className={linkClass}>
-              Mavis Hopper
-            </a>
-            ,{" "}
             <a href={unsplashProfile("brechtcorbeel")} className={linkClass}>
               Brecht Corbeel
             </a>{" "}

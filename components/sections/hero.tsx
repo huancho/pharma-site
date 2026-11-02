@@ -5,14 +5,7 @@ import { Container, Section } from "@/components/section"
 import { Typography } from "@/components/typography"
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-
-const photo = {
-  src: "https://images.unsplash.com/photo-1792152240190-b1c387361081?ixid=M3wxMTE4NjM0fDB8MXxzZWFyY2h8OHx8bGFib3JhdG9yeSUyMGdsYXNzd2FyZSUyMGJvdGFuaWNhbCUyMHBsYW50fGVufDF8fHx8MTc5MzY1OTI1NXww&ixlib=rb-4.1.0&w=2400&q=80&fm=jpg&fit=max",
-  width: 2400,
-  height: 3200,
-  color: "#d9d9f3",
-  alt: "Clear laboratory flasks holding blue liquids on a bright, reflective white surface.",
-}
+import heroPhoto from "@/public/images/hero-flask.webp"
 
 function Hero() {
   return (
@@ -69,20 +62,20 @@ function Hero() {
 
         {/* Not wrapped in Entrance: its opacity start would delay LCP. */}
         <div
-          className="photo-frame relative isolate aspect-[5/7] w-full overflow-hidden rounded-3xl sm:aspect-[5/4] lg:aspect-auto lg:min-h-[clamp(30rem,calc(100svh-10.5rem),46rem)] dark:brightness-85"
-          style={{ "--photo-color": photo.color } as React.CSSProperties}
+          className="photo-frame relative isolate aspect-[5/7] w-full overflow-hidden rounded-3xl sm:aspect-square lg:aspect-auto lg:min-h-[clamp(30rem,calc(100svh-10.5rem),46rem)] dark:brightness-85"
+          style={{ "--photo-color": "#c8d8c8" } as React.CSSProperties}
         >
-          {/* The crop stops short of the dark stripe and the instrument at the
-              photo's right edge, whatever shape the frame takes. */}
+          {/* A tall desktop frame crops the 4:5 photo by height, so it renders wider
+              than the frame: sizes follows the photo, not the column. */}
           <Image
-            src={photo.src}
-            width={photo.width}
-            height={photo.height}
-            alt={photo.alt}
-            sizes="(min-width: 1152px) 864px, (min-width: 1024px) 75vw, 150vw"
+            src={heroPhoto}
+            alt="Glass laboratory flask of pale golden-green botanical extract on a moss-covered stone, beside a fresh green leaf."
+            fill
+            sizes="(min-width: 1152px) 590px, (min-width: 1024px) 58vw, 100vw"
+            placeholder="blur"
             loading="eager"
             fetchPriority="high"
-            className="absolute bottom-0 left-0 h-auto w-[166%] max-w-none translate-y-[17%]"
+            className="object-cover object-[50%_60%]"
           />
         </div>
       </Container>
