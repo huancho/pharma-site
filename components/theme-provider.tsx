@@ -10,15 +10,40 @@ function ThemeProvider({
   return (
     <NextThemesProvider
       attribute="class"
-      defaultTheme="system"
+      defaultTheme="light"
       enableSystem
       disableTransitionOnChange
       {...props}
     >
-      <ThemeHotkey />
+      {process.env.NODE_ENV === "development" && <ThemeHotkey />}
+      <ThemeColorSync />
       {children}
     </NextThemesProvider>
   )
+}
+
+// The theme is a class, not the OS setting, so a media query on theme-color can't
+// follow the toggle. next-themes applies the class in its own effect, which runs
+// after this child's, hence reading the token a frame later.
+function ThemeColorSync() {
+  const { resolvedTheme } = useTheme()
+
+  React.useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      document
+        .querySelector('meta[name="theme-color"]')
+        ?.setAttribute(
+          "content",
+          getComputedStyle(document.documentElement).getPropertyValue(
+            "--background"
+          )
+        )
+    })
+
+    return () => cancelAnimationFrame(frame)
+  }, [resolvedTheme])
+
+  return null
 }
 
 function isTypingTarget(target: EventTarget | null) {

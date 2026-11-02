@@ -2,17 +2,21 @@ import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
 
-const sectionVariants = cva("relative w-full scroll-mt-16", {
+const sectionVariants = cva("relative w-full", {
   variants: {
     spacing: {
-      default: "py-16 md:py-20",
-      sm: "py-10 md:py-12",
+      // The scroll margins clear the floating header. Roomy sections already do it
+      // with their own padding, so an anchor lands on the section's top edge rather
+      // than leaving a strip of the section before it on screen.
+      none: "scroll-mt-20",
+      default: "scroll-mt-3 py-16 md:scroll-mt-0 md:py-20",
+      sm: "scroll-mt-8 py-10 md:py-12",
       lg: "py-24 md:py-28",
     },
     tone: {
       default: "bg-background text-foreground",
       muted: "bg-muted text-foreground",
-      primary: "bg-primary text-primary-foreground",
+      primary: "bg-band text-band-foreground",
     },
   },
   defaultVariants: {
@@ -22,13 +26,15 @@ const sectionVariants = cva("relative w-full scroll-mt-16", {
 })
 
 function Section({
+  as: Component = "section",
   className,
   spacing = "default",
   tone = "default",
   ...props
-}: React.ComponentProps<"section"> & VariantProps<typeof sectionVariants>) {
+}: { as?: "section" | "header" | "footer" } & React.ComponentProps<"section"> &
+  VariantProps<typeof sectionVariants>) {
   return (
-    <section
+    <Component
       data-slot="section"
       className={cn(sectionVariants({ spacing, tone, className }))}
       {...props}
@@ -36,18 +42,21 @@ function Section({
   )
 }
 
-const containerVariants = cva("mx-auto w-full px-6 md:px-8", {
-  variants: {
-    size: {
-      default: "max-w-6xl",
-      sm: "max-w-3xl",
-      lg: "max-w-7xl",
+const containerVariants = cva(
+  "mx-auto w-full pr-[max(1.5rem,env(safe-area-inset-right))] pl-[max(1.5rem,env(safe-area-inset-left))] md:pr-[max(2rem,env(safe-area-inset-right))] md:pl-[max(2rem,env(safe-area-inset-left))]",
+  {
+    variants: {
+      size: {
+        default: "max-w-6xl",
+        sm: "max-w-3xl",
+        lg: "max-w-7xl",
+      },
     },
-  },
-  defaultVariants: {
-    size: "default",
-  },
-})
+    defaultVariants: {
+      size: "default",
+    },
+  }
+)
 
 function Container({
   className,
